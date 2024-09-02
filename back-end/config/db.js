@@ -47,4 +47,4 @@ client.connect().then(() => {
         }
     });
 
-module.exports = client;
+module.exports = client; // testing
