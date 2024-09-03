@@ -13,38 +13,7 @@ const client = new Client({
     // }
 });
 
-client.connect().then(() => {
-    console.log('Connected to the PostgresSQL database!');
+client.connect().then(() => console.log('Connected to the PostgresSQL database!'))
+    .catch(err => console.log('Connection error', err.stack));
 
-    // const insertQuery =
-    //     `INSERT INTO users (username, email)
-    //  VALUES ($1, $2)
-    //  RETURNING *;`;
-
-    // const values = ['Jill Doe', 'jill.doe@example.com'];
-
-    //return client.query(insertQuery, values);
-
-    const selectQuery = `SELECT * FROM USERS;`;
-
-    return client.query(selectQuery);
-
-}).then((result) => {
-    //console.log('User inserted:', result.rows[0]);
-
-    console.log('Users:', result.rows);
-
-
-    // Close the database connection
-    return client.end();
-})
-    .catch(err => {
-        if (err.code === '23505') {
-            console.log('Duplicate entry detected:', err.detail)
-        }
-        else {
-            console.log('Error executing query', err.stack);
-        }
-    });
-
-module.exports = client; // testing
+module.exports = client;

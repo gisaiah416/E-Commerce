@@ -1,12 +1,11 @@
 const express = require('express');
 const app = express();
-const db = require('./config/db');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+const userRoutes = require('./routes/userRoutes.js');
+app.use('/api', userRoutes);
 
 
 const PORT = process.env.PORT || 3000;
