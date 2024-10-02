@@ -18,3 +18,15 @@ exports.createUser = async (req, res) => {
         }
     }
 };
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const result = await client.query
+            (
+                'SELECT * FROM USERS'
+            );
+        res.status(200).json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: 'Error getting all users' });
+    }
+};
