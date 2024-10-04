@@ -7,6 +7,8 @@ router.post('/users', userController.createUser);
 
 router.get('/users', userController.getAllUsers);
 
+router.get('/users/login', userController.GetUser);
+
 // Get all users
 // router.get('/users', userController.getAllUsers);
 

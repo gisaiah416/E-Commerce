@@ -30,3 +30,11 @@ exports.getAllUsers = async (req, res) => {
         res.status(500).json({ error: 'Error getting all users' });
     }
 };
+
+exports.GetUser = async (req, res) => {
+    const { username, password } = req.body;
+    res.json({
+        username,
+        password
+    });
+}
