@@ -46,9 +46,31 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.GetUser = async (req, res) => {
-    const { username, password } = req.body;
-    res.json({
-        username,
-        password
-    });
+    const { email, password } = req.body;
+    const saltRounds = 10;
+
+    console.log(email);
+
+    try {
+        const validemail = await client.query
+            (
+                'select * from users where email = $1', [email]
+            );
+
+        if (validemail.rows.length > 0) {
+            console.log('email found');
+        }
+        else {
+            console.log('email not found');
+        }
+
+    } catch (err) {
+        console.log('Hello World');
+    }
+
+
+    // res.json({
+    //     username,
+    //     password
+    // });
 }
