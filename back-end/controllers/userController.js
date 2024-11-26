@@ -1,8 +1,10 @@
 const client = require('../config/db.js');
+const bcyrpt = require('bcrypt');
 
 // Create a new user
 exports.createUser = async (req, res) => {
     const { username, email, password } = req.body;
+    const saltRounds = 10;
     try {
         const InvalidEmail = await client.query
             (
@@ -13,9 +15,13 @@ exports.createUser = async (req, res) => {
             return res.status(409).json({ error: 'Email already exists' });
         }
 
+        const hashedPassword = await bcyrpt.hash(password, saltRounds);
+
+        console.log(hashedPassword);
+
         const result = await client.query
             (
-                'INSERT INTO users (username, email, user_pw) VALUES ($1, $2, $3) RETURNING *', [username, email, password]
+                'INSERT INTO users (username, email, user_pw) VALUES ($1, $2, $3) RETURNING *', [username, email, hashedPassword]
             );
         res.status(201).json(result.rows[0]);
     } catch (err) {
