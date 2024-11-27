@@ -1,5 +1,5 @@
 const client = require('../config/db.js');
-const bcyrpt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 // Create a new user
 exports.createUser = async (req, res) => {
@@ -15,7 +15,7 @@ exports.createUser = async (req, res) => {
             return res.status(409).json({ error: 'Email already exists' });
         }
 
-        const hashedPassword = await bcyrpt.hash(password, saltRounds);
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         console.log(hashedPassword);
 
@@ -47,9 +47,6 @@ exports.getAllUsers = async (req, res) => {
 
 exports.GetUser = async (req, res) => {
     const { email, password } = req.body;
-    const saltRounds = 10;
-
-    console.log(email);
 
     try {
         const validemail = await client.query
@@ -57,20 +54,38 @@ exports.GetUser = async (req, res) => {
                 'select * from users where email = $1', [email]
             );
 
-        if (validemail.rows.length > 0) {
-            console.log('email found');
+        if (validemail.rows.length === 0) {
+            return res.status(404).json(
+                {
+                    error: "User not found"
+                }
+            )
+        }
+
+        const user = validemail.rows[0];
+        const isvalidPassword = await bcrypt.compare(password, user.user_pw);
+
+        if (isvalidPassword) {
+            return res.status(200).json(
+                {
+                    "username": user.username,
+                    "email": user.email
+                }
+            )
         }
         else {
-            console.log('email not found');
+            return res.status(401).json(
+                {
+                    "Denied": "Invalid password"
+                }
+            )
         }
 
     } catch (err) {
-        console.log('Hello World');
+        return res.status(500).json(
+            {
+                error: "Servor Error"
+            }
+        )
     }
-
-
-    // res.json({
-    //     username,
-    //     password
-    // });
 }
