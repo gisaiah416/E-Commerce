@@ -6,17 +6,15 @@ document.getElementById('loginForm')
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
+            const response = await fetch("http://localhost:3000/api/users/login", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
-
-            console.log(data);
 
             if (response.status === 200) {
                 document.getElementById('message').style.color = 'green';
