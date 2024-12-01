@@ -89,3 +89,14 @@ exports.GetUser = async (req, res) => {
         )
     }
 }
+
+exports.deleteUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+
+    } catch (error) {
+
+    }
+
+}
