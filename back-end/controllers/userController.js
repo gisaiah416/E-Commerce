@@ -94,6 +94,19 @@ exports.deleteUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        const validEmail = await client.query(
+            'SELECT * FROM USERS WHERE email = $1', [email]
+        )
+
+        if (validEmail.rows.length === 0) {
+            return res.status(404).json{
+                error: "User does not exist";
+            };
+        }
+
+        const user = validEmail.rows[0];
+
+
 
     } catch (error) {
 
