@@ -104,6 +104,7 @@ exports.deleteUser = async (req, res) => {
             };
         }
 
+        const isvalidPassword = await bcrypt.compare(password, user.user_pw);
         const user = validEmail.rows[0];
 
 
