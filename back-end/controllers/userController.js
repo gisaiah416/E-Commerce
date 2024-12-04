@@ -96,21 +96,32 @@ exports.deleteUser = async (req, res) => {
     try {
         const validEmail = await client.query(
             'SELECT * FROM USERS WHERE email = $1', [email]
-        )
+        );
 
         if (validEmail.rows.length === 0) {
-            return res.status(404).json{
-                error: "User does not exist";
-            };
+            return res.status(404).json({
+                error: "User does not exist"
+            });
         }
 
-        const isvalidPassword = await bcrypt.compare(password, user.user_pw);
         const user = validEmail.rows[0];
+        const isvalidPassword = await bcrypt.compare(password, user.user_pw);
 
+        if (isvalidPassword) {
+            return res.status(200).json({
+                "Message": "User deleted"
+            })
+        }
 
+        else {
+            return res.status(404).json({
+                error: "invalid password"
+            })
+        }
 
     } catch (error) {
-
+        return res.status(500).json({
+            error: "Server Error"
+        })
     }
-
 }
