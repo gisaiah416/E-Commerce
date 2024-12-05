@@ -125,3 +125,8 @@ exports.deleteUser = async (req, res) => {
         })
     }
 }
+
+exports.changePassword = async (req, res) => {
+    const { email, password } = req.body;
+
+}

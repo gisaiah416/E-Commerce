@@ -11,4 +11,6 @@ router.post('/login', userController.GetUser);
 
 router.delete('/delete', userController.deleteUser);
 
+router.put('/changepassword', userController.changePassword);
+
 module.exports = router;
