@@ -18,12 +18,16 @@ document.getElementById('registerForm')
 
             const data = await response.json();
 
-            if (response.status === 200) {
-                console.log('SUCCESS');
+            if (response.status === 201) {
+                document.getElementById('message').textContent = 'User Created Successfully';
+                document.getElementById('message').style.color = 'green';
+                //console.log('SUCCESS');
             }
             else {
-                console.log('ERROR');
-                console.log(data.error)
+                document.getElementById('message').textContent = data.error || 'Creation Failed';
+                document.getElementById('message').style.color = 'red';
+                //console.log('ERROR');
+                //console.log(data.error)
             }
 
         } catch (error) {

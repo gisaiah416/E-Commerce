@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/register.css">
     <title>Register</title>
 </head>
 
 <body>
 
-    <div class="RegisterContainer">
+    <div class="register-container">
+        <h1>Register Page</h1>
         <form id="registerForm">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
@@ -23,6 +25,8 @@
             <button type="submit">Register</button>
         </form>
     </div>
+
+    <div id="message"></div>
 
     <script src="./scripts/register.js"></script>
 </body>
