@@ -1,5 +1,7 @@
 const client = require('../config/db.js');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Create a new user
 exports.createUser = async (req, res) => {
@@ -17,13 +19,14 @@ exports.createUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        console.log(hashedPassword);
-
         const result = await client.query
             (
                 'INSERT INTO users (username, email, user_pw) VALUES ($1, $2, $3) RETURNING *', [username, email, hashedPassword]
             );
         res.status(201).json(result.rows[0]);
+
+        res.json({ message: 'Login succesfull', token })
+
     } catch (err) {
         // if (err.code === '23505') {
         //     res.status(409).json({ error: 'Duplicate entry detected' });
@@ -45,7 +48,7 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-exports.GetUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -66,12 +69,17 @@ exports.GetUser = async (req, res) => {
         const isvalidPassword = await bcrypt.compare(password, user.user_pw);
 
         if (isvalidPassword) {
+            const token = jwt.sign(
+                { id: user.id, email: user.email },
+                JWT_SECRET, { expiresIn: '1h' }
+            );
+
             return res.status(200).json(
                 {
-                    "username": user.username,
-                    "email": user.email
+                    message: 'Login successful', token
                 }
             )
+
         }
         else {
             return res.status(401).json(
@@ -80,6 +88,9 @@ exports.GetUser = async (req, res) => {
                 }
             )
         }
+
+
+
 
     } catch (err) {
         return res.status(500).json(
