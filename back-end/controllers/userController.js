@@ -89,9 +89,6 @@ exports.loginUser = async (req, res) => {
             )
         }
 
-
-
-
     } catch (err) {
         return res.status(500).json(
             {
@@ -100,6 +97,25 @@ exports.loginUser = async (req, res) => {
         )
     }
 }
+
+exports.getUser = async (req, res) => {
+
+    try {
+        const userQuery = await client.query
+            (
+                'select * from users where email = $1', [req.user.id]
+            );
+
+        if (userQuery.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+        res.json(userQuery.rows[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+
+})
 
 exports.deleteUser = async (req, res) => {
     const { email, password } = req.body;
