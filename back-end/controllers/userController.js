@@ -115,7 +115,7 @@ exports.getUser = async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 
-})
+}
 
 exports.deleteUser = async (req, res) => {
     const { email, password } = req.body;
