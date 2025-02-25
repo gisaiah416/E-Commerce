@@ -19,6 +19,7 @@ document.getElementById('loginForm')
             if (response.status === 200) {
                 document.getElementById('message').style.color = 'green';
                 document.getElementById('message').textContent = 'Login Successful';
+                console.log(data.token)
             }
             else {
                 document.getElementById('message').style.color = 'red';

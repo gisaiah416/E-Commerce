@@ -2,6 +2,7 @@ const client = require('../config/db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = process.env.JWT_SECRET;
+require('dotenv').config();
 
 // Create a new user
 exports.createUser = async (req, res) => {
@@ -36,17 +37,17 @@ exports.createUser = async (req, res) => {
     }
 };
 
-exports.getAllUsers = async (req, res) => {
-    try {
-        const result = await client.query
-            (
-                'SELECT * FROM USERS'
-            );
-        res.status(200).json(result.rows);
-    } catch (err) {
-        res.status(500).json({ error: 'Error getting all users' });
-    }
-};
+// exports.getAllUsers = async (req, res) => {
+//     try {
+//         const result = await client.query
+//             (
+//                 'SELECT * FROM USERS'
+//             );
+//         res.status(200).json(result.rows);
+//     } catch (err) {
+//         res.status(500).json({ error: 'Error getting all users' });
+//     }
+// };
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
