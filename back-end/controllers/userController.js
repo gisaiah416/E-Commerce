@@ -9,24 +9,29 @@ exports.createUser = async (req, res) => {
     const { username, email, password } = req.body;
     const saltRounds = 10;
     try {
+        console.log('hello');
         const InvalidEmail = await client.query
             (
-                'SELECT * FROM USERS WHERE username = $1', [email]
+                'SELECT * FROM USERS WHERE email = $1', [email]
             );
 
         if (InvalidEmail.rows.length > 0) {
             return res.status(409).json({ error: 'Email already exists' });
         }
 
+
+
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const result = await client.query
             (
-                'INSERT INTO users (username, email, user_pw) VALUES ($1, $2, $3) RETURNING *', [username, email, hashedPassword]
+                'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *', [username, email, hashedPassword]
             );
-        res.status(201).json(result.rows[0]);
 
-        res.json({ message: 'Login succesfull', token })
+        res.status(201).json({
+            message: 'User created successfully',
+            user: result.rows[0]
+        });
 
     } catch (err) {
         // if (err.code === '23505') {
